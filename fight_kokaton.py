@@ -114,7 +114,7 @@ class Bomb:
         if not tate:
             self.vy *= -1
         self.rct.move_ip(self.vx, self.vy)
-        screen.blit(self.img, self.rct)
+        screen.blit(self.img, self.rct)  #ボムを表示する
 
 
 class Beam:
@@ -147,7 +147,7 @@ def main():
     bg_img = pg.image.load("ex03/fig/pg_bg.jpg")
     bird = Bird(3, (900, 400))
     #bomb = Bomb((255, 0, 0), 10)
-    bombs = [Bomb((255, 0, 0), 10) for _ in range(NUM_OF_BOMBS)]
+    bombs = [Bomb((255, 0, 0), 10) for _ in range(NUM_OF_BOMBS)] #ボムを生成
     beam = None
 
     clock = pg.time.Clock()
