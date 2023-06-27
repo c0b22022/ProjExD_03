@@ -148,7 +148,7 @@ def main():
     bird = Bird(3, (900, 400))
     #bomb = Bomb((255, 0, 0), 10)
     bombs = [Bomb((255, 0, 0), 10) for _ in range(NUM_OF_BOMBS)]
-    beam = None
+    beam = []
 
     clock = pg.time.Clock()
     tmr = 0
@@ -157,7 +157,7 @@ def main():
             if event.type == pg.QUIT:
                 return
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
-                beam = Beam(bird)
+                beams.append(Beam(bird))
         
         screen.blit(bg_img, [0, 0])
         
@@ -171,18 +171,28 @@ def main():
         
         for i, bomb in enumerate(bombs):
             if beam is not None:
-                if bomb.rct.colliderect(beam.rct):
+                if bomb.rct.colliderect(bomb.rct):
                     bombs[i] = None
                     beam = None
                     bird.change_img(6, screen)
                     pg.display.update() 
+
+        for beam in beams:
+            for i, bomb in enumerate(bombs):
+                if bomb is not None and bomb.rct.colliderect(beam.rct):
+                    bombs[i] = None
+                    beams.remove(beam)
+                    bird.change_img(6,screen)
+                    break
+
 
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
         bombs = [bomb for bomb in bombs if bomb is not None]
         for bomb in bombs:
             bomb.update(screen)
-        if beam is not None:
+        beams = [beam for beam in beams if beam is not None]
+        for beam in beams:
             beam.update(screen)
         pg.display.update()
         tmr += 1
